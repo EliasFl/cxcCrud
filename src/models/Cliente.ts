@@ -9,13 +9,13 @@ export class Cliente {
     @Column("varchar")
     nombre: string
 
-    @Column("long")
+    @Column("bigint")
     cedula: number
 
-    @Column("long")
+    @Column("money")
     limiteDeCredito: number
 
     @Column("char")
     estado: string
-    
+
 }
