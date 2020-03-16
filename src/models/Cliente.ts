@@ -1,5 +1,6 @@
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm"
 import { Transaccion } from "./Transaccion"
+import { AsientoContable } from "./AsientoContable"
 
 @Entity()
 export class Cliente {
@@ -21,4 +22,7 @@ export class Cliente {
 
     @OneToMany(type => Transaccion, transaccion => transaccion.cliente)
     transacciones: Transaccion[]
+
+    @OneToMany(type => AsientoContable, asientoContable => asientoContable.cliente)
+    asientosContables: AsientoContable[]
 }

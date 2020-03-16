@@ -1,11 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, ManyToOne} from "typeorm"
 import { TipoDocumento } from "./TipoDocumento"
 import { Cliente } from "./Cliente"
-
-export enum TipoMovimiento {
-    DEBITO = "DB",
-    CREDITO = "CR"
-}
+import {TipoMovimiento} from "../utils"
 
 @Entity()
 export class Transaccion {

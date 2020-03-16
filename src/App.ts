@@ -7,6 +7,7 @@ async function initializeConnection() {
         throw new Error("Error connecting to the database")
     }
 
+    connection.synchronize()
     console.log("Connected to the database")
 }
 
