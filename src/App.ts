@@ -4,7 +4,6 @@ import * as bodyParser from "body-parser"
 import { Request, Response } from "express"
 import * as express from "express"
 import { Routes } from "./routes"
-import { TipoDocumento } from "./models/TipoDocumento"
 
 createConnection().then(async connection => {
     //Initializes express server
@@ -26,13 +25,6 @@ createConnection().then(async connection => {
 
     const port = 8080
     app.listen(port)
-
-    // // insert new users for test
-    // await connection.manager.save(connection.manager.create(TipoDocumento, {
-    //     descripcion: "Recibo de cobro",
-    //     cuentaContable: 15,
-    //     estado: "R"
-    // }));
 
     console.log(`Server has started at port ${port}`)
 }).catch(error => console.log(`An error has been encountered starting the server: ${error}`))
