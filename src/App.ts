@@ -1,14 +1,15 @@
 import "reflect-metadata"
 import {createConnection} from "typeorm"
+import * as bodyParser from "body-parser"
+import {Request, Response} from "express"
+import * as express from "express"
 
-async function initializeConnection() {
-    const connection = await createConnection()
-    if (connection == undefined) {
-        throw new Error("Error connecting to the database")
-    }
+createConnection().then(connection => {
+    //Initializes express server
+    const app = express()
+    app.use(bodyParser.json())
 
-    connection.synchronize()
-    console.log("Connected to the database")
-}
-
-initializeConnection()
+    const port = 8080
+    app.listen(port)
+    console.log(`Server has started at port ${port}`)
+}).catch(error => console.log(`An error has been encountered starting the server: ${error}`))
