@@ -12,6 +12,18 @@ const TipoDocumentoRoutes = [
         route: "/tiposDocumentos/:id",
         controller: TipoDocumentoController,
         action: "one"
+    },
+    {
+        method: "post",
+        route: "/tiposDocumentos",
+        controller: TipoDocumentoController,
+        action: "save"
+    },
+    {
+        method: "delete",
+        route: "/tiposDocumentos/:id",
+        controller: TipoDocumentoController,
+        action: "remove"
     }
 ]
 
