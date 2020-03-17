@@ -24,6 +24,12 @@ const TipoDocumentoRoutes = [
         route: "/tiposDocumentos/:id",
         controller: TipoDocumentoController,
         action: "remove"
+    },
+    {
+        method: "put",
+        route: "/tiposDocumentos/:id",
+        controller: TipoDocumentoController,
+        action: "update"
     }
 ]
 
