@@ -1,6 +1,6 @@
-import {getRepository} from "typeorm"
-import {NextFunction, Request, Response} from "express"
-import {TipoDocumento} from "../models/TipoDocumento"
+import { getRepository } from "typeorm"
+import { NextFunction, Request, Response } from "express"
+import { TipoDocumento } from "../models/TipoDocumento"
 
 export class TipoDocumentoController {
     private repository = getRepository(TipoDocumento)
@@ -27,13 +27,13 @@ export class TipoDocumentoController {
             const updatedRecord = await this.repository.update(request.params.id, request.body)
             return response.status(200).send(updatedRecord)
         }
-        return response.status(404).send({message: "Record not found"})
+        return response.status(404).send({ message: "Record not found" })
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {
         const recordToRemove = await this.repository.findOne(request.params.id)
         await this.repository.remove(recordToRemove)
 
-        return response.status(200).send({message: "Record deleted successfully"})
+        return response.status(200).send({ message: "Record deleted successfully" })
     }
 }
