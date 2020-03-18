@@ -2,7 +2,7 @@
 
 ### You need to have
  - Nodejs and npm
- - Postgress
+ - Postgres
  - TypeScript
  
  ### Instalation
