@@ -1,5 +1,6 @@
 import {TipoDocumentoController} from "./controllers/TipoDocumentoController"
 import {ClienteController} from "./controllers/ClienteController"
+import { TransaccionController } from "./controllers/TransaccionController"
 
 const TipoDocumentoRoutes = [
     {
@@ -67,7 +68,41 @@ const ClienteRoutes = [
     }
 ]
 
+const TransaccionRoutes = [
+    {
+        method: "get",
+        route: "/transacciones",
+        controller: TransaccionController,
+        action: "all"
+    },
+    {
+        method: "get",
+        route: "/transacciones/:id",
+        controller: TransaccionController,
+        action: "one"
+    },
+    {
+        method: "post",
+        route: "/transacciones",
+        controller: TransaccionController,
+        action: "save"
+    },
+    {
+        method: "delete",
+        route: "/transacciones/:id",
+        controller: TransaccionController,
+        action: "remove"
+    },
+    {
+        method: "put",
+        route: "/transacciones/:id",
+        controller: TransaccionController,
+        action: "update"
+    }
+]
+
 export const Routes = [
     ...TipoDocumentoRoutes,
-    ...ClienteRoutes
+    ...ClienteRoutes,
+    ...TransaccionRoutes
 ]
