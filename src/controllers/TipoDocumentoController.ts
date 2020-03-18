@@ -6,15 +6,18 @@ export class TipoDocumentoController {
     private repository = getRepository(TipoDocumento)
 
     async all(request: Request, response: Response, next: NextFunction) {
-        return response.status(200).send(this.repository.find())
+        const results = await this.repository.find()
+        return response.status(200).send(results)
     }
 
     async one(request: Request, response: Response, next: NextFunction) {
-        return response.send(this.repository.findOne(request.params.id))
+        const result = await this.repository.findOne(request.params.id)
+        return response.send(result)
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
-        return response.status(201).send(this.repository.save(request.body))
+        const result = await this.repository.save(request.body)
+        return response.status(201).send(result)
     }
 
     async update(request: Request, response: Response, next: NextFunction) {
