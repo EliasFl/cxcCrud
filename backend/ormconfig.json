@@ -1,19 +1,13 @@
 {
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "elias",
-    "password": "",
-    "database": "unapec",
-    "synchronize": true,
-    "logging": false,
-    "entities": [
-       "src/models/**/*.ts"
-    ],
-    "migrations": [
-       "src/migration/**/*.ts"
-    ],
-    "subscribers": [
-       "src/subscriber/**/*.ts"
-    ]
- }
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "manu",
+  "password": "manu123",
+  "database": "cxc",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/models/**/*.ts"],
+  "migrations": ["src/migration/**/*.ts"],
+  "subscribers": ["src/subscriber/**/*.ts"]
+}

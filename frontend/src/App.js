@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <nav
-        class="navbar is-dark"
+        className="navbar is-dark"
         role="navigation"
         aria-label="main navigation"
       >
@@ -20,25 +20,25 @@ function App() {
         </div>
 
         <ul className="navbar-menu navbar-end">
-          <li class="navbar-item">
+          <li className="navbar-item">
             <Link to="/">Home</Link>
           </li>
-          <li class="navbar-item">
+          <li className="navbar-item">
             <Link to="/clients">Clients</Link>
           </li>
-          <li class="navbar-item">
+          <li className="navbar-item">
             <Link to="/documents">Documents</Link>
           </li>
-          <li class="navbar-item">
+          <li className="navbar-item">
             <Link to="/transactions">Transactions</Link>
           </li>
-          <li class="navbar-item">
+          <li className="navbar-item">
             <Link to="/seats">Seats</Link>
           </li>
         </ul>
       </nav>
-      <section class="section">
-        <div class="container">
+      <section className="section">
+        <div className="container">
           <Switch>
             <Route path="/">
               <ClientsPage />
