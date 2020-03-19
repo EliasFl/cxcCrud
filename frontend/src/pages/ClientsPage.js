@@ -29,7 +29,7 @@ const ClientsPage = () => {
       estado: client.status
     };
     api
-      .post("/clientes")
+      .post("/clientes", data)
       .then(response => {
         console.log("Guardado satisfactoriamente");
       })
