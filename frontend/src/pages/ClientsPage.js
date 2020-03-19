@@ -43,6 +43,8 @@ const ClientsPage = () => {
     api
       .delete(`/clientes/${id}`)
       .then(response => {
+        this.data();
+
         console.log("Eliminado satisfactoriamente");
       })
       .catch(error => {
@@ -131,12 +133,25 @@ const ClientsPage = () => {
               <th>
                 <abbr title="Position">Id</abbr>
               </th>
-              <th>Descripcion</th>
-              <th>Cuenta Contable</th>
-              <th>Estado</th>
+              <th>Nombre</th>
+              <th>Cedula</th>
+              <th>Limite de credito</th>
+              <th>Status</th>
+              <th>Acciones</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {users.map(user => (
+              <tr>
+                <td>{user.id}</td>
+                <td>{user.nombre}</td>
+                <td>{user.cedula}</td>
+                <td>{user.limiteDeCredito}</td>
+                <td>{user.estado}</td>
+                <td>borrar, editar </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       ) : (
         <div>No data</div>
