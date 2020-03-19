@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "descripcion": "Factura de venta",
+        "cuentaContable": 83,
+        "estado": "R"
+    },
+    {
+        "id": 2,
+        "descripcion": "Recibo de cobro",
+        "cuentaContable": 15,
+        "estado": "R"
+    },
+    {
+        "id": 4,
+        "descripcion": "Presupuesto",
+        "cuentaContable": 27,
+        "estado": "R"
+    }
+]
