@@ -97,6 +97,8 @@ const ClientsPage = () => {
 
   return (
     <section className="section">
+      <h1 className="is-size-1">Clientes</h1>
+
       {addForm ? (
         <div>
           <div className="field">
