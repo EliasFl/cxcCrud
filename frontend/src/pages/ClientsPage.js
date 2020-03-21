@@ -182,7 +182,7 @@ const ClientsPage = () => {
           </thead>
           <tbody>
             {users.map(user => (
-              <tr key="user.id">
+              <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.nombre}</td>
                 <td>{user.cedula}</td>
@@ -198,16 +198,16 @@ const ClientsPage = () => {
                       }}
                       className="button is-warning"
                     >
-                      <span class="icon is-small">
-                        <i class="fas fa-pen"></i>
+                      <span className="icon is-small">
+                        <i className="fas fa-pen"></i>
                       </span>
                     </button>
                     <button
                       onClick={e => deleteClient(e, user.id)}
-                      class="button is-danger"
+                      className="button is-danger"
                     >
-                      <span class="icon is-small">
-                        <i class="fas fa-trash-alt"></i>
+                      <span className="icon is-small">
+                        <i className="fas fa-trash-alt"></i>
                       </span>
                     </button>
                   </p>
