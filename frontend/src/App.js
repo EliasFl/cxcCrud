@@ -40,7 +40,7 @@ function App() {
       <section className="section">
         <div className="container">
           <Switch>
-            <Route exact path="/">
+            <Route exact path="/clients">
               <ClientsPage />
             </Route>
             <Route exact path="/documents">
