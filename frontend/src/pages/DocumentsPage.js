@@ -94,6 +94,7 @@ const DocumentsPage = ({}) => {
 
   return (
     <section className="section">
+      <h1 className="is-size-1">Tipo de Documentos</h1>
       {addForm ? (
         <form className="form">
           <div className="field">
