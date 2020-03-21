@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import api from "../utils/api";
 import Swal from "sweetalert2";
 
+const transacctionData = {
+  tipoMovimiento: "DB",
+  tipoDocumento: "",
+  numeroDocumento: "",
+  cliente: "",
+  monto: ""
+}
+
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [users, setUsers] = useState([]);
@@ -9,14 +17,7 @@ const TransactionsPage = () => {
 
   const [addForm, setAddForm] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [transaction, setTransaction] = useState({
-    tipoMovimiento: "DB",
-    tipoDocumento: "",
-    numeroDocumento: "",
-    fecha: new Date(),
-    cliente: "",
-    monto: ""
-  });
+  const [transaction, setTransaction] = useState(transacctionData);
 
   useEffect(() => {
     const documentData = async () => {
@@ -29,15 +30,15 @@ const TransactionsPage = () => {
       setUsers(result.data);
     };
 
-    const data = async () => {
-      const result = await api.get("/transacciones");
-      setTransactions(result.data);
-    };
-
-    data();
+    getTransacciones();
     documentData();
     documentClients();
   }, []);
+
+  const getTransacciones = async () => {
+    const result = await api.get("/transacciones");
+    setTransactions(result.data);
+  };
 
   const onChange = e => {
     e.persist();
@@ -50,7 +51,6 @@ const TransactionsPage = () => {
       tipoMovimiento: transaction.tipoMovimiento,
       tipoDocumento: transaction.tipoDocumento,
       numeroDocumento: transaction.numeroDocumento,
-      fecha: transaction.fecha,
       cliente: transaction.cliente,
       monto: transaction.monto
     };
@@ -61,6 +61,9 @@ const TransactionsPage = () => {
           title: "Guardado satisfactoriamente",
           icon: "success"
         });
+        getTransacciones()
+        setAddForm(false)
+        clearData()
       })
       .catch(error => {
         Swal.fire({
@@ -79,6 +82,7 @@ const TransactionsPage = () => {
           title: "Eliminado satisfactoriamente",
           icon: "success"
         });
+        getTransacciones()
       })
       .catch(error => {
         Swal.fire({
@@ -94,18 +98,19 @@ const TransactionsPage = () => {
       tipoMovimiento: transaction.tipoMovimiento,
       tipoDocumento: transaction.tipoDocumento,
       numeroDocumento: transaction.numeroDocumento,
-      fecha: transaction.fecha,
       cliente: transaction.cliente,
       monto: transaction.monto
     };
 
     api
-      .put(`tiposDocumentos/${data.id}`, data)
+      .put(`/transacciones/${transaction.id}`, data)
       .then(() => {
         Swal.fire({
           title: "Editado satisfactoriamente",
           icon: "success"
         });
+        clearData()
+        getTransacciones()
       })
       .catch(() => {
         Swal.fire({
@@ -114,6 +119,10 @@ const TransactionsPage = () => {
         });
       });
   };
+
+  const clearData = () => {
+    setTransaction(transacctionData)
+  }
 
   return (
     <section className="section">
@@ -125,7 +134,11 @@ const TransactionsPage = () => {
             <div className="control is-fullwidth">
               <div className="select is-primary is-fullwidth">
                 <select
-                  defaultValue={users.length > 0 && users[0].id}
+                  defaultValue={
+                    edit === false ? (users[0].id ? users[0].id : 0) :
+                      transaction.cliente.id
+                  }
+                  value={transaction.cliente.id}
                   onChange={e => onChange(e)}
                   name="cliente"
                 >
@@ -144,7 +157,9 @@ const TransactionsPage = () => {
             <div className="control is-fullwidth">
               <div className="select is-primary is-fullwidth">
                 <select
-                  defaultValue={"DB"}
+                  defaultValue={
+                    edit == false ? "DB" : transaction.tipoMovimiento
+                  }
                   onChange={e => onChange(e)}
                   name="tipoMovimiento"
                 >
@@ -160,7 +175,7 @@ const TransactionsPage = () => {
             <div className="control is-fullwidth">
               <div className="select is-primary is-fullwidth">
                 <select
-                  value={transaction.tipoDocumento}
+                  value={transaction.tipoDocumento.id}
                   onChange={e => onChange(e)}
                   name="tipoDocumento"
                 >
@@ -184,18 +199,6 @@ const TransactionsPage = () => {
                 className="input"
                 type="number"
                 placeholder="233"
-              />
-            </div>
-          </div>
-          <div className="field">
-            <label className="label">Fecha</label>
-            <div className="control">
-              <input
-                name="fecha"
-                value={transaction.fecha}
-                onChange={e => onChange(e)}
-                className="input"
-                type="date"
               />
             </div>
           </div>
@@ -225,13 +228,13 @@ const TransactionsPage = () => {
                   Editar Documento
                 </button>
               ) : (
-                <button
-                  onClick={e => saveTransaction(e)}
-                  className="button is-link"
-                >
-                  Guardar Transaccion
-                </button>
-              )}
+                  <button
+                    onClick={e => saveTransaction(e)}
+                    className="button is-link"
+                  >
+                    Guardar Transaccion
+                  </button>
+                )}
             </div>
             <div className="control">
               <button
@@ -247,10 +250,10 @@ const TransactionsPage = () => {
           </div>
         </form>
       ) : (
-        <a href="#" onClick={() => setAddForm(addForm => !addForm)}>
-          Agregar nueva transaccion
-        </a>
-      )}
+          <a href="#" onClick={() => setAddForm(addForm => !addForm)}>
+            Agregar nueva transaccion
+          </a>
+        )}
 
       {transactions.length > 0 ? (
         <table className="table is-fullwidth">
@@ -260,6 +263,8 @@ const TransactionsPage = () => {
                 <abbr title="Position">Id</abbr>
               </th>
               <th>Monto</th>
+              <th>Cliente</th>
+              <th>Tipo de documento</th>
               <th>Tipo de Movimiento</th>
               <th>Numero de documento</th>
               <th>Fecha</th>
@@ -271,6 +276,8 @@ const TransactionsPage = () => {
               <tr key={transaction.id}>
                 <td>{transaction.id}</td>
                 <td>{transaction.monto}</td>
+                <td>{transaction.cliente.nombre}</td>
+                <td>{transaction.tipoDocumento.descripcion}</td>
                 <td>{transaction.tipoMovimiento}</td>
                 <td>{transaction.numeroDocumento}</td>
                 <td>{transaction.fecha}</td>
@@ -282,18 +289,18 @@ const TransactionsPage = () => {
                         setTransaction(transaction);
                         setAddForm(addForm => !addForm);
                       }}
-                      class="button is-warning"
+                      className="button is-warning"
                     >
-                      <span class="icon is-small">
-                        <i class="fas fa-pen"></i>
+                      <span className="icon is-small">
+                        <i className="fas fa-pen"></i>
                       </span>
                     </button>
                     <button
                       onClick={e => deleteTransaction(e, transaction.id)}
-                      class="button is-danger"
+                      className="button is-danger"
                     >
-                      <span class="icon is-small">
-                        <i class="fas fa-trash-alt"></i>
+                      <span className="icon is-small">
+                        <i className="fas fa-trash-alt"></i>
                       </span>
                     </button>
                   </p>
@@ -303,8 +310,8 @@ const TransactionsPage = () => {
           </tbody>
         </table>
       ) : (
-        <div>No data</div>
-      )}
+          <div>No data</div>
+        )}
     </section>
   );
 };

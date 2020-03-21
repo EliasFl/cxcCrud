@@ -6,7 +6,7 @@ export class TransaccionController {
     private repository = getRepository(Transaccion)
 
     async all(request: Request, response: Response, next: NextFunction) {
-        const results = await this.repository.find()
+        const results = await this.repository.find({relations: ['cliente', "tipoDocumento"]})
         return response.status(200).send(results)
     }
 
@@ -16,6 +16,7 @@ export class TransaccionController {
     }
 
     async save(request: Request, response: Response, next: NextFunction) {
+        console.log(request.body)
         const result = await this.repository.save(request.body)
         return response.status(201).send(result)
     }

@@ -16,8 +16,7 @@ export class Transaccion {
     })
     tipoMovimiento: TipoMovimiento
 
-    @OneToOne(type => TipoDocumento)
-    @JoinColumn()
+    @ManyToOne(type => TipoDocumento)
     tipoDocumento: TipoDocumento
 
     @Column("int")
