@@ -153,6 +153,8 @@ const ClientsPage = () => {
                   onClick={e => {
                     setEdit(false);
                     editClient(e);
+                    setAddForm(false)
+                    clearData()
                   }}
                   className="button is-link is-warning"
                 >
