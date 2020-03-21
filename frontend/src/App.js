@@ -40,16 +40,16 @@ function App() {
       <section className="section">
         <div className="container">
           <Switch>
-            <Route path="/">
+            <Route exact path="/">
               <ClientsPage />
             </Route>
-            <Route path="/documents">
+            <Route exact path="/documents">
               <DocumentsPage />
             </Route>
-            <Route path="/seats">
+            <Route exact path="/seats">
               <SeatsPage />
             </Route>
-            <Route path="/transactions">
+            <Route exact path="/transactions">
               <TransactionsPage />
             </Route>
           </Switch>

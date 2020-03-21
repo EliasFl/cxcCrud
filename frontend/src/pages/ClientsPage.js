@@ -142,7 +142,10 @@ const ClientsPage = () => {
             <div className="control">
               {edit ? (
                 <button
-                  onClick={e => editClient(e)}
+                  onClick={e => {
+                    setEdit(false);
+                    editClient(e);
+                  }}
                   className="button is-link is-warning"
                 >
                   Editar Cliente
