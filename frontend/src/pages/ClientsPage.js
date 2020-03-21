@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import api from "../utils/api";
+import Swal from "sweetalert2";
 
 const ClientsPage = () => {
   const [users, setUsers] = useState([]);
-  const [addForm, setAddForm] = useState(true);
+  const [addForm, setAddForm] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [client, setClient] = useState({
     name: "",
     cedula: "",
@@ -20,21 +22,53 @@ const ClientsPage = () => {
     data();
   }, []);
 
+  const editClient = e => {
+    e.preventDefault();
+    const data = {
+      id: client.id,
+      nombre: client.nombre,
+      cedula: client.cedula,
+      limiteDeCredito: client.limiteDeCredito,
+      estado: "R"
+    };
+
+    api
+      .put(`clientes/${data.id}`, data)
+      .then(response => {
+        Swal.fire({
+          title: "Editado satisfactoriamente",
+          icon: "success"
+        });
+      })
+      .catch(error => {
+        Swal.fire({
+          title: "Error",
+          icon: "error"
+        });
+      });
+  };
+
   const saveClient = e => {
     e.preventDefault();
     const data = {
-      nombre: client.name,
+      nombre: client.nombre,
       cedula: client.cedula,
-      limiteDeCredito: client.limit,
-      estado: client.status
+      limiteDeCredito: client.limiteDeCredito,
+      estado: "R"
     };
     api
       .post("/clientes", data)
       .then(response => {
-        console.log("Guardado satisfactoriamente");
+        Swal.fire({
+          title: "Guardado satisfactoriamente",
+          icon: "success"
+        });
       })
       .catch(error => {
-        console.log("Cliente con errores");
+        Swal.fire({
+          title: "Error",
+          icon: "error"
+        });
       });
   };
 
@@ -43,12 +77,16 @@ const ClientsPage = () => {
     api
       .delete(`/clientes/${id}`)
       .then(response => {
-        this.data();
-
-        console.log("Eliminado satisfactoriamente");
+        Swal.fire({
+          title: "Eliminado satisfactoriamente",
+          icon: "success"
+        });
       })
       .catch(error => {
-        console.log("Cliente con errores");
+        Swal.fire({
+          title: "Error papalote",
+          icon: "error"
+        });
       });
   };
 
@@ -65,8 +103,8 @@ const ClientsPage = () => {
             <label className="label">Nombre</label>
             <div className="control">
               <input
-                name="name"
-                value={client.name}
+                name="nombre"
+                value={client.nombre}
                 onChange={e => onChange(e)}
                 className="input"
                 type="text"
@@ -91,43 +129,42 @@ const ClientsPage = () => {
             <label className="label">Limite de Credito</label>
             <div className="control">
               <input
-                name="limit"
+                name="limiteDeCredito"
                 onChange={e => onChange(e)}
-                value={client.limit}
+                value={client.limiteDeCredito}
                 className="input"
                 type="number"
                 placeholder="23000"
               />
             </div>
           </div>
-          <div className="field">
-            <label className="label">Estado</label>
-            <div className="control">
-              <input
-                name="status"
-                value={client.status}
-                onChange={e => onChange(e)}
-                className="input"
-                type="text"
-                placeholder="Activo"
-              />
-            </div>
-          </div>
-
           <div className="field is-grouped">
             <div className="control">
-              <button onClick={e => saveClient(e)} className="button is-link">
-                Guardar Cliente
-              </button>
+              {edit ? (
+                <button
+                  onClick={e => editClient(e)}
+                  className="button is-link is-warning"
+                >
+                  Editar Cliente
+                </button>
+              ) : (
+                <button onClick={e => saveClient(e)} className="button is-link">
+                  Guardar Cliente
+                </button>
+              )}
             </div>
             <div className="control">
               <button className="button is-link is-light">Cancelar</button>
             </div>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <a href="#" onClick={() => setAddForm(addForm => !addForm)}>
+          Agregar un nuevo cliente
+        </a>
+      )}
       {users.length > 0 ? (
-        <table className="table mt-2">
+        <table className="table is-fullwidth">
           <thead>
             <tr>
               <th>
@@ -142,13 +179,36 @@ const ClientsPage = () => {
           </thead>
           <tbody>
             {users.map(user => (
-              <tr>
+              <tr key="user.id">
                 <td>{user.id}</td>
                 <td>{user.nombre}</td>
                 <td>{user.cedula}</td>
                 <td>{user.limiteDeCredito}</td>
                 <td>{user.estado}</td>
-                <td>borrar, editar </td>
+                <td>
+                  <p className="buttons">
+                    <button
+                      onClick={() => {
+                        setEdit(true);
+                        setClient(user);
+                        setAddForm(addForm => !addForm);
+                      }}
+                      class="button is-warning"
+                    >
+                      <span class="icon is-small">
+                        <i class="fas fa-pen"></i>
+                      </span>
+                    </button>
+                    <button
+                      onClick={e => deleteClient(e, user.id)}
+                      class="button is-danger"
+                    >
+                      <span class="icon is-small">
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
+                    </button>
+                  </p>
+                </td>
               </tr>
             ))}
           </tbody>
