@@ -241,6 +241,7 @@ const TransactionsPage = () => {
                 onClick={() => {
                   setEdit(false);
                   setAddForm(addForm => !addForm);
+                  clearData()
                 }}
                 className="button is-link is-light"
               >
