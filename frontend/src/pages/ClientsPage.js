@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import api from "../utils/api";
 import Swal from "sweetalert2";
 
+const clientData = {
+  name: "",
+  cedula: "",
+  limit: 0,
+  status: ""
+};
+
 const ClientsPage = () => {
   const [users, setUsers] = useState([]);
   const [addForm, setAddForm] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [client, setClient] = useState({
-    name: "",
-    cedula: "",
-    limit: 0,
-    status: ""
-  });
+  const [client, setClient] = useState(clientData);
 
   useEffect(() => {
     const data = async () => {
@@ -95,6 +97,10 @@ const ClientsPage = () => {
     setClient({ ...client, [e.target.name]: e.target.value });
   };
 
+  const clearData = () => {
+    setClient(clientData)
+  }
+
   return (
     <section className="section">
       <h1 className="is-size-1">Clientes</h1>
@@ -159,7 +165,10 @@ const ClientsPage = () => {
               )}
             </div>
             <div className="control">
-              <button className="button is-link is-light" onClick={() => setAddForm(false)}>
+              <button className="button is-link is-light" onClick={() => {
+                setAddForm(false)
+                clearData()
+              }}>
                 Cancelar
               </button>
             </div>
