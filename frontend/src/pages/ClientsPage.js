@@ -196,7 +196,7 @@ const ClientsPage = () => {
                         setClient(user);
                         setAddForm(addForm => !addForm);
                       }}
-                      class="button is-warning"
+                      className="button is-warning"
                     >
                       <span class="icon is-small">
                         <i class="fas fa-pen"></i>
