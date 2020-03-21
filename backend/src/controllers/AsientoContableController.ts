@@ -6,7 +6,9 @@ export class AsientoContableController {
     private repository = getRepository(AsientoContable)
 
     async all(request: Request, response: Response, next: NextFunction) {
-        const results = await this.repository.find()
+        const results = await this.repository.find({
+            relations: ["cliente"]
+        })
         return response.status(200).send(results)
     }
 

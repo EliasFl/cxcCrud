@@ -40,6 +40,9 @@ function App() {
       <section className="section">
         <div className="container">
           <Switch>
+          <Route exact path="/">
+            <h1 className="is-size-1">Home page</h1>
+          </Route>
             <Route exact path="/clients">
               <ClientsPage />
             </Route>
