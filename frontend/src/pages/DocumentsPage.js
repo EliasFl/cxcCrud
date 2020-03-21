@@ -2,24 +2,26 @@ import React, { useState, useEffect } from "react";
 import api from "../utils/api";
 import Swal from "sweetalert2";
 
+const documentData = {
+  descripcion: "",
+  cuentaContable: null,
+  status: "R"
+}
+
 const DocumentsPage = ({}) => {
   const [documents, setDocuments] = useState([]);
   const [addForm, setAddForm] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [document, setDocument] = useState({
-    descripcion: "",
-    cuentaContable: null,
-    status: "R"
-  });
+  const [document, setDocument] = useState(documentData);
 
   useEffect(() => {
-    const data = async () => {
-      const result = await api.get("/tiposDocumentos");
-      setDocuments(result.data);
-    };
-
-    data();
+    getTiposDocumentos();
   }, []);
+
+  const getTiposDocumentos = async () => {
+    const result = await api.get("/tiposDocumentos");
+    setDocuments(result.data);
+  };
 
   const onChange = e => {
     e.persist();
@@ -40,6 +42,7 @@ const DocumentsPage = ({}) => {
           title: "Guardado satisfactoriamente",
           icon: "success"
         });
+        getTiposDocumentos();
       })
       .catch(error => {
         Swal.fire({
@@ -65,6 +68,7 @@ const DocumentsPage = ({}) => {
           title: "Editado satisfactoriamente",
           icon: "success"
         });
+        getTiposDocumentos()
       })
       .catch(() => {
         Swal.fire({
@@ -83,6 +87,7 @@ const DocumentsPage = ({}) => {
           title: "Eliminado satisfactoriamente",
           icon: "success"
         });
+        getTiposDocumentos()
       })
       .catch(error => {
         Swal.fire({
@@ -91,6 +96,10 @@ const DocumentsPage = ({}) => {
         });
       });
   };
+
+  const clearData = () => {
+    setDocument(documentData)
+  }
 
   return (
     <section className="section">
@@ -138,7 +147,11 @@ const DocumentsPage = ({}) => {
                 </button>
               ) : (
                 <button
-                  onClick={e => saveDocument(e)}
+                  onClick={e => {
+                    saveDocument(e)
+                    clearData()
+                    setAddForm(false)
+                  }}
                   className="button is-link"
                 >
                   Guardar Documento
@@ -150,6 +163,7 @@ const DocumentsPage = ({}) => {
                 onClick={() => {
                   setEdit(false);
                   setAddForm(addForm => !addForm);
+                  clearData();
                 }}
                 className="button is-link is-light"
               >
@@ -189,18 +203,18 @@ const DocumentsPage = ({}) => {
                         setDocument(document);
                         setAddForm(addForm => !addForm);
                       }}
-                      class="button is-warning"
+                      className="button is-warning"
                     >
-                      <span class="icon is-small">
-                        <i class="fas fa-pen"></i>
+                      <span className="icon is-small">
+                        <i className="fas fa-pen"></i>
                       </span>
                     </button>
                     <button
                       onClick={e => deleteDocument(e, document.id)}
-                      class="button is-danger"
+                      className="button is-danger"
                     >
-                      <span class="icon is-small">
-                        <i class="fas fa-trash-alt"></i>
+                      <span className="icon is-small">
+                        <i className="fas fa-trash-alt"></i>
                       </span>
                     </button>
                   </p>
