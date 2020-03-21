@@ -16,13 +16,13 @@ const ClientsPage = () => {
   const [client, setClient] = useState(clientData);
 
   useEffect(() => {
-    const data = async () => {
-      const result = await api.get("/clientes");
-      setUsers(result.data);
-    };
-
-    data();
+    getClients();
   }, []);
+
+  const getClients = async () => {
+    const result = await api.get("/clientes");
+    setUsers(result.data);
+  };
 
   const editClient = e => {
     e.preventDefault();
@@ -41,6 +41,7 @@ const ClientsPage = () => {
           title: "Editado satisfactoriamente",
           icon: "success"
         });
+        getClients()
       })
       .catch(error => {
         Swal.fire({
@@ -65,6 +66,7 @@ const ClientsPage = () => {
           title: "Guardado satisfactoriamente",
           icon: "success"
         });
+        getClients()
       })
       .catch(error => {
         Swal.fire({
@@ -83,6 +85,7 @@ const ClientsPage = () => {
           title: "Eliminado satisfactoriamente",
           icon: "success"
         });
+        getClients()
       })
       .catch(error => {
         Swal.fire({
