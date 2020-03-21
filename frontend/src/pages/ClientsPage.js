@@ -159,12 +159,14 @@ const ClientsPage = () => {
               )}
             </div>
             <div className="control">
-              <button className="button is-link is-light">Cancelar</button>
+              <button className="button is-link is-light" onClick={() => setAddForm(false)}>
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       ) : (
-        <a href="#" onClick={() => setAddForm(addForm => !addForm)}>
+        <a href="#" onClick={() => setAddForm(true)}>
           Agregar un nuevo cliente
         </a>
       )}
