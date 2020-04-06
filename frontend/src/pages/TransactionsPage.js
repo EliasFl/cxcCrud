@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../utils/api";
 import Swal from "sweetalert2";
+import MaterialTable from 'material-table'
 
 const transacctionData = {
   tipoMovimiento: "DB",
@@ -122,6 +123,67 @@ const TransactionsPage = () => {
 
   const clearData = () => {
     setTransaction(transacctionData)
+  }
+
+  function TransactionsTable(transactionsData) {
+    let data = transactionsData.map(transaction => {
+      return {
+        ...transaction,
+        cliente: transaction.cliente.id,
+        tipoDocumento: transaction.tipoDocumento.id
+      }
+    })
+  
+    let lookUpClientesData = transactionsData.map(transaction => {
+      return {
+        [transaction.cliente.id]: transaction.cliente.nombre
+      }
+    }) 
+  
+    let lookUpTipoDocumentoData = transactionsData.map(transaction => {
+      return {
+        [transaction.tipoDocumento.id]: transaction.tipoDocumento.descripcion
+      }
+    })
+  
+    let lookUpClientes = Object.assign({}, ...lookUpClientesData)
+    let lookUpTipoDocumento = Object.assign({}, ...lookUpTipoDocumentoData)
+  
+    return (
+      <MaterialTable
+        title="Transacciones"
+        columns={[
+          { title: 'ID', field: 'id' },
+          { title: 'Monto', field: 'monto' },
+          { title: 'Cliente', field: "cliente", lookup: lookUpClientes },
+          { title: 'Tipo documento', field: 'tipoDocumento', lookup: lookUpTipoDocumento },
+          { title: "Tipo movimiento", field: "tipoMovimiento", lookup: {DB: "Debito", "CR": "Credito"} },
+          { title: "Numero documento", field: "numeroDocumento" },
+          { title: "Fecha", field: "fecha" },
+        ]}
+        actions={[
+          {
+            icon: "edit",
+            tooltip: "Edit row",
+            onClick: (event, rowData) => {
+              setEdit(true);
+              setTransaction(rowData);
+              setAddForm(addForm => !addForm);
+            }
+          },
+          {
+            icon: "delete",
+            tooltip: "Delete row",
+            onClick: (event, rowData) => deleteTransaction(event, rowData.id)
+          }
+        ]}
+        data={data}
+        options={{
+          filtering: true,
+          actionsColumnIndex: -1
+        }}
+      />
+    )
   }
 
   return (
@@ -256,61 +318,8 @@ const TransactionsPage = () => {
           </a>
         )}
 
-      {transactions.length > 0 ? (
-        <table className="table is-fullwidth">
-          <thead>
-            <tr>
-              <th>
-                <abbr title="Position">Id</abbr>
-              </th>
-              <th>Monto</th>
-              <th>Cliente</th>
-              <th>Tipo de documento</th>
-              <th>Tipo de Movimiento</th>
-              <th>Numero de documento</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map(transaction => (
-              <tr key={transaction.id}>
-                <td>{transaction.id}</td>
-                <td>{transaction.monto}</td>
-                <td>{transaction.cliente.nombre}</td>
-                <td>{transaction.tipoDocumento.descripcion}</td>
-                <td>{transaction.tipoMovimiento}</td>
-                <td>{transaction.numeroDocumento}</td>
-                <td>{transaction.fecha}</td>
-                <td>
-                  <p className="buttons">
-                    <button
-                      onClick={() => {
-                        setEdit(true);
-                        setTransaction(transaction);
-                        setAddForm(addForm => !addForm);
-                      }}
-                      className="button is-warning"
-                    >
-                      <span className="icon is-small">
-                        <i className="fas fa-pen"></i>
-                      </span>
-                    </button>
-                    <button
-                      onClick={e => deleteTransaction(e, transaction.id)}
-                      className="button is-danger"
-                    >
-                      <span className="icon is-small">
-                        <i className="fas fa-trash-alt"></i>
-                      </span>
-                    </button>
-                  </p>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
+      {
+        transactions.length > 0 ? TransactionsTable(transactions) : (
           <div>No data</div>
         )}
     </section>
@@ -318,3 +327,60 @@ const TransactionsPage = () => {
 };
 
 export default TransactionsPage;
+
+// (
+//   <table className="table is-fullwidth">
+//     <thead>
+//       <tr>
+//         <th>
+//           <abbr title="Position">Id</abbr>
+//         </th>
+//         <th>Monto</th>
+//         <th>Cliente</th>
+//         <th>Tipo de documento</th>
+//         <th>Tipo de Movimiento</th>
+//         <th>Numero de documento</th>
+//         <th>Fecha</th>
+//         <th>Acciones</th>
+//       </tr>
+//     </thead>
+//     <tbody>
+//       {transactions.map(transaction => (
+//         <tr key={transaction.id}>
+//           <td>{transaction.id}</td>
+//           <td>{transaction.monto}</td>
+//           <td>{transaction.cliente.nombre}</td>
+//           <td>{transaction.tipoDocumento.descripcion}</td>
+//           <td>{transaction.tipoMovimiento}</td>
+//           <td>{transaction.numeroDocumento}</td>
+//           <td>{transaction.fecha}</td>
+//           <td>
+//             <p className="buttons">
+//               <button
+//                 onClick={() => {
+//                   setEdit(true);
+//                   setTransaction(transaction);
+//                   setAddForm(addForm => !addForm);
+//                 }}
+//                 className="button is-warning"
+//               >
+//                 <span className="icon is-small">
+//                   <i className="fas fa-pen"></i>
+//                 </span>
+//               </button>
+//               <button
+//                 onClick={e => deleteTransaction(e, transaction.id)}
+//                 className="button is-danger"
+//               >
+//                 <span className="icon is-small">
+//                   <i className="fas fa-trash-alt"></i>
+//                 </span>
+//               </button>
+//             </p>
+//           </td>
+//         </tr>
+//       ))
+//       }
+//     </tbody>
+//   </table>
+// )
