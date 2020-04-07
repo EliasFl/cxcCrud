@@ -1,0 +1,8 @@
+{
+	"descripcion": "Asiento de nomina de empleados Octubre 2020",
+	"cliente": 1,
+	"cuenta": 34,
+	"tipoMovimiento": "CR",
+	"montoAsiento": 20000,
+	"estado": "R"
+}
