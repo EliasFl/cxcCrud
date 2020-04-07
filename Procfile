@@ -1,1 +1,1 @@
-cmd: cd ./frontend && npm install
+release: cd ./frontend && npm install
