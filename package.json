@@ -18,7 +18,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"cd ./backend && npm run backend\" \"cd ./frontend && npm run start\""
+    "start": "cd ./frontend && npm run start"
   },
   "repository": {
     "type": "git",
