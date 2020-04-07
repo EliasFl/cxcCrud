@@ -1,0 +1,1 @@
+cmd: cd ./frontend && npm install
